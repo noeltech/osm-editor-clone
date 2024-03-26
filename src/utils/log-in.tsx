@@ -6,8 +6,8 @@ function useLoginForm() {
   const [serverErrors, setServerErrors] = useState([])
   const { mutate: loginUser } = useLoginUser()
   const [formData, setFormData] = useState({
-    email: 'noelbajande@gmail.com',
-    password: 'qwertyui'
+    email: '',
+    password: ''
   })
   const handleInputChange = useCallback((event) => {
     const { name, value } = event.currentTarget
@@ -26,12 +26,12 @@ function useLoginForm() {
         setErrors(errors)
       } else {
         console.log(data)
-        loginUser(data, {
-          onError: (data) => {
-            console.log(data)
-            setServerErrors([data])
-          }
-        })
+        // loginUser(data, {
+        //   onError: (data) => {
+        //     console.log(data)
+        //     setServerErrors([data])
+        //   }
+        // })
       }
     },
     [loginUser]

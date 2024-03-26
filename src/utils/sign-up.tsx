@@ -8,9 +8,9 @@ function useSignupForm() {
   const [formData, setFormData] = useState({
     email: '',
     confirmEmail: '',
-    displayName: 'noel',
-    password: 'qwertyui',
-    confirmPassword: 'qwertyui'
+    displayName: '',
+    password: '',
+    confirmPassword: ''
   })
   const handleInputChange = useCallback((event) => {
     const { name, value } = event.currentTarget
@@ -28,11 +28,11 @@ function useSignupForm() {
       if (!success) {
         setErrors(errors)
       } else {
-        registerUser(data, {
-          onError: (data) => {
-            setServerErrors(data.errors)
-          }
-        })
+        // registerUser(data, {
+        //   onError: (data) => {
+        //     setServerErrors(data.errors)
+        //   }
+        // })
       }
     },
     [registerUser]

@@ -44,7 +44,9 @@ const primaryNavigation = [
   { withIcon: false, label: 'History', id: 'history', href: '#' },
   { withIcon: false, label: 'Export', id: 'export', href: '#' }
 ]
+import { useHistory } from 'react-router-dom'
 function PrimaryNavigation() {
+  const history = useHistory()
   const navigationCount = primaryNavigation.length
   const urlLocation = 'edit'
   return (
@@ -58,6 +60,7 @@ function PrimaryNavigation() {
               } ${urlLocation === item.id ? 'border-b-2' : ''} ${
                 item.withIcon && 'p-2'
               }`}
+              onClick={() => history.push('/edit')}
               key={item.id}
               variant="ghost"
             >
