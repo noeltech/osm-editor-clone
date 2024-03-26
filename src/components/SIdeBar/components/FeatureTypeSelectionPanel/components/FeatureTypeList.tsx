@@ -1,21 +1,38 @@
+import { useDrawControl, useDrawControlAction } from '@/utils/useDrawControl'
 import { FeatureTypeListItem } from './FeatureTypeButton'
-import { useCurrentSelectedState } from '@/features/edit/useCurrentlySelectedFeature'
-import { useNewFeatures } from '@/utils/temp-feature'
 
-export default function FeatureTypeList() {
-  const currentSelectedFeature = useCurrentSelectedState()
-  const selected = currentSelectedFeature?.properties.featureType
-    ? currentSelectedFeature?.properties.featureType
-    : 'Generic'
-  const id = currentSelectedFeature ? currentSelectedFeature.id : ''
-  console.log(currentSelectedFeature)
+export default function FeatureTypeList({ selected }) {
+  const { updateFeature, setSelectedFeature } = useDrawControlAction()
+  const { newFeatures } = useDrawControl()
+  const { addHistory } = useEditHistory()
+  const { properties, id } = selected
+
+  const onSelectChange = (name) => {
+    updateFeature(id, 'featureType', name)
+    const newProp = { ...properties, featureType: name }
+
+    const updatedFeature = { ...selected, properties: newProp }
+    setSelectedFeature(updatedFeature)
+
+    if (newFeatures.includes(id)) return
+    // OTHERWISE GENERATE A NEW HISTORY
+    const updates = {
+      id,
+      type: 'properties',
+      value: newProp,
+      updated_by: 'temp_id'
+    }
+    addHistory('update', updates)
+  }
+  const selectedType = properties.featureType
+
   return (
     <>
       <List
         data={featureType}
-        selected={selected}
+        selected={selectedType}
         id={id}
-        // onSelectChange={() => {}}
+        onSelectChange={onSelectChange}
       />
     </>
   )
@@ -24,14 +41,15 @@ export default function FeatureTypeList() {
 interface IList {
   data: object[]
   selected?: string
-  // onSelectChange?: () => void
+  onSelectChange?: (name) => void
   id: string
 }
 
-function List({ data, selected, id }: IList) {
-  const { updateFeature } = useNewFeatures()
+function List({ data, selected, id, onSelectChange }: IList) {
+  // const { updateFeature } = useNewFeatures()
   const handleOnSelectChange = async (name) => {
-    updateFeature(id, { featureType: name }, 'properties')
+    // updateFeature(id, { featureType: name }, 'properties')
+    onSelectChange && onSelectChange(name)
   }
   return (
     <ul className="">
@@ -64,6 +82,7 @@ import {
   CircleDollarSignIcon,
   MapIcon
 } from 'lucide-react'
+import { useEditHistory } from '@/utils/edit-history'
 
 export const featureType = [
   { id: 'cafe', name: 'Cafe', icon: <CoffeeIcon />, info: 'Cafe' },

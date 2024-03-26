@@ -1,6 +1,12 @@
-import React, { ReactNode, createContext, useContext, useState } from 'react'
+import React, {
+  ReactNode,
+  createContext,
+  useContext,
+  useRef,
+  useState
+} from 'react'
 
-const MapLayoverLayoutContext = createContext<boolean>(true)
+const MapLayoverLayoutContext = createContext(null)
 const MapLayoverLayoutContextAction = createContext<
   React.Dispatch<React.SetStateAction<boolean>> | undefined
 >(undefined)
@@ -16,7 +22,7 @@ function MapLayoverLayout({ children }: { children: ReactNode }) {
 //
 
 function SidePanel({ children }: { children: ReactNode }) {
-  const isSidePanelOpen = useContext(MapLayoverLayoutContext)
+  const { isSidePanelOpen } = useContext(MapLayoverLayoutContext)
   return (
     <div
       className={`z-50 h-full  max-w-[20%]  shrink bg-white ${
@@ -38,7 +44,7 @@ function MapLayoverLayoutProvider({ children }: { children: ReactNode }) {
   const [isSidePanelOpen, setIsSidePanelOpen] = useState(true)
 
   return (
-    <MapLayoverLayoutContext.Provider value={isSidePanelOpen}>
+    <MapLayoverLayoutContext.Provider value={{ isSidePanelOpen }}>
       <MapLayoverLayoutContextAction.Provider value={setIsSidePanelOpen}>
         {children}
       </MapLayoverLayoutContextAction.Provider>

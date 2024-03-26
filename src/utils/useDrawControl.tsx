@@ -1,118 +1,78 @@
-import { DrawFeature } from '@mapbox/mapbox-gl-draw'
+import MapboxDraw, { DrawFeature } from '@mapbox/mapbox-gl-draw'
 import {
   ReactNode,
   createContext,
   useCallback,
   useContext,
-  useMemo,
-  // useEffect,
+  useRef,
   useState
+  // useEffect,
 } from 'react'
+import { useEditHistory } from './edit-history'
 
 // Define the context type
-type DrawControlContextType = {
-  control: MapboxDraw | null
-}
-type DrawControlActionContextType = {
-  setControl: (control: MapboxDraw | null) => void // explicit type for control argument
 
-  setCurrentMode: React.Dispatch<React.SetStateAction<string>>
-  setControlMode: (mode: string) => void
-  getCurrentSelectedFeature: () => DrawFeature
-  getCurrentFeatureProperty: () => object | null
-  updateFeatureProperties: (updates: object) => void
-}
 // Create the context with a default value
-const DrawControlContext = createContext<DrawControlContextType | undefined>(
-  undefined
-)
-const DrawControlActionContext = createContext<
-  DrawControlActionContextType | undefined
->(undefined)
+const DrawControlContext = createContext(undefined)
+const DrawControlActionContext = createContext(undefined)
 
 // Provider component with clear naming
 function DrawControlProvider({ children }: { children: ReactNode }) {
-  const [control, setControl] = useState<MapboxDraw | null>(null)
-  const [currentMode, setCurrentMode] = useState<string>('simple_select')
+  const { addHistory, getHistorybyType, removeHistory } = useEditHistory()
+  const controlRef = useRef<MapboxDraw | null>(null)
+  const [selectedFeature, setSelectedFeature] = useState<object | null>(null)
+  const [hoveredFeature, setHoveredFeature] = useState<object | null>(null)
+  const [newFeatures, setNewFeatures] = useState([])
+  const control = controlRef.current
+  const getSelected = () => {
+    console.log(controlRef.current)
+    const { features } = controlRef.current.getSelected()
+    return features[0]
+  }
 
-  const setControlMode = useCallback(
-    (mode: string) => {
-      setCurrentMode(mode)
-      control?.changeMode(mode)
-    },
-    [control]
-  )
+  const updateFeature = (id, property, value) => {
+    control?.setFeatureProperty(id, property, value)
+  }
+  const deleteFeature = useCallback(() => {
+    if (!selectedFeature) return
+    const { id } = selectedFeature
+    const addedHistory = getHistorybyType('add')
+    const newFeaturesId = addedHistory.map((item) => item.data.id)
 
-  // const setControlDrawFeatures = useCallback(
-  //   (DrawFeatures) => {
-  //     if (!control) return new Error('No Draw Control is being used')
-  //     if (!DrawFeatures) return new Error('Draw Features is null or no value')
-  //     control.set(DrawFeatures)
-  //   },
-  //   [control]
-  // )
-
-  const getCurrentFeatureProperty = useCallback(
-    (featureId: string) => {
-      if (!featureId) return console.log('Provide a feature ID')
-      const feature = control?.get(featureId)
-      if (!feature) return null
-      return feature.properties
-    },
-    [control]
-  )
-
-  const getCurrentSelectedFeatureId = useCallback(() => {
-    const featureIDs = control?.getSelectedIds()
-    if (featureIDs && featureIDs.length >= 1) {
-      return featureIDs[0]
+    console.log(newFeaturesId)
+    // console.log(newFeaturesId)
+    if (newFeaturesId.includes(id)) {
+      const history = addedHistory.find((item) => item.data.id == id)
+      if (!history) return
+      removeHistory(history.id)
     } else {
-      return null
+      addHistory('delete', selectedFeature)
     }
-  }, [control])
+    control?.delete(id)
+    setSelectedFeature(null)
+    setHoveredFeature(null)
+  }, [
+    selectedFeature,
+    control,
+    setHoveredFeature,
+    setSelectedFeature,
+    addHistory,
+    getHistorybyType,
+    removeHistory
+  ])
 
-  const getCurrentSelectedFeature = useCallback(() => {
-    const featureCollection = control?.getSelected()
-    if (featureCollection && featureCollection.features.length >= 1) {
-      return featureCollection.features[0]
-    } else {
-      return null
-    }
-  }, [control])
-
-  const updateFeatureProperties = useCallback(
-    (updates: object) => {
-      const featureId = getCurrentSelectedFeatureId()
-      control?.setFeatureProperty(featureId, 'featureType', updates.featureType)
-    },
-    [control, getCurrentSelectedFeatureId]
-  )
-
-  console.log('Control Provider Invoked')
-  const value = { control, currentMode }
-  const actions = useMemo(
-    () => ({
-      setControl,
-      setCurrentMode,
-      setControlMode,
-      getCurrentSelectedFeature,
-      getCurrentSelectedFeatureId,
-      getCurrentFeatureProperty,
-      updateFeatureProperties
-    }),
-    [
-      setControl,
-      setCurrentMode,
-      setControlMode,
-      getCurrentSelectedFeature,
-      getCurrentSelectedFeatureId,
-      getCurrentFeatureProperty,
-      updateFeatureProperties
-    ]
-  )
-
+  console.log(selectedFeature)
+  const actions = {
+    setSelectedFeature,
+    updateFeature,
+    setNewFeatures,
+    setHoveredFeature,
+    deleteFeature
+  }
   return (
-    <DrawControlContext.Provider value={value}>
+    <DrawControlContext.Provider
+      value={{ controlRef, newFeatures, selectedFeature, hoveredFeature }}
+    >
       <DrawControlActionContext.Provider value={actions}>
         {children}
       </DrawControlActionContext.Provider>
@@ -121,7 +81,7 @@ function DrawControlProvider({ children }: { children: ReactNode }) {
 }
 
 // Custom hook with type safety
-function useDrawControl(): DrawControlContextType {
+function useDrawControl() {
   const context = useContext(DrawControlContext)
 
   if (!context) {

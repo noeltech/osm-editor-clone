@@ -10,7 +10,7 @@ import {
 import FeatureTypeSection from './FeatureTypeSection'
 import FieldsSection from './FieldsSection'
 
-function FeatureInspectPanel() {
+function FeatureInspectPanel({ selected }) {
   return (
     <Panel>
       <PanelHeader>
@@ -19,7 +19,7 @@ function FeatureInspectPanel() {
         <CloseButton />
       </PanelHeader>
       <PanelContent>
-        <FeatureTypeSection />
+        <FeatureTypeSection selected={selected} />
         <FieldsSection />
       </PanelContent>
     </Panel>

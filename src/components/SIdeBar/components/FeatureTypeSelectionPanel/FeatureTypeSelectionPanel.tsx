@@ -12,7 +12,7 @@ import FeatureTypeList from './components/FeatureTypeList'
 //   children: JSX.Element | null
 // }
 
-export default function FeatureTypeSelectionPanel() {
+export default function FeatureTypeSelectionPanel({ selected }) {
   return (
     <Panel>
       <PanelHeader>
@@ -21,7 +21,7 @@ export default function FeatureTypeSelectionPanel() {
       </PanelHeader>
       <SearchBar />
       <PanelContent>
-        <FeatureTypeList></FeatureTypeList>
+        <FeatureTypeList selected={selected}></FeatureTypeList>
       </PanelContent>
     </Panel>
   )

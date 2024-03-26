@@ -9,17 +9,22 @@ import {
   useCurrentSelectedAction,
   useCurrentSelectedState
 } from '@/features/edit/useCurrentlySelectedFeature'
+import { useDrawControl, useDrawControlAction } from '@/utils/useDrawControl'
 
 function SideBar() {
   // const { nonSelected } = useEdit()
-  const currentSelectedFeature = useCurrentSelectedState()
-  const { setCurrentSelectedFeature } = useCurrentSelectedAction()
-
+  const { selectedFeature, hoveredFeature } = useDrawControl()
+  const { setSelectedFeature } = useDrawControlAction()
+  const selected = selectedFeature
+    ? selectedFeature
+    : hoveredFeature
+      ? hoveredFeature
+      : null
   const handleOnClose = useCallback(() => {
-    setCurrentSelectedFeature(null)
-  }, [setCurrentSelectedFeature])
+    setSelectedFeature(null)
+  }, [setSelectedFeature])
 
-  const toggleView = currentSelectedFeature ? true : false
+  const toggleView = selected ? true : false
 
   return (
     <section className="h-full ">
@@ -27,8 +32,8 @@ function SideBar() {
         <SearchFeaturePanel />
       ) : (
         <SlidingPanel onClose={handleOnClose}>
-          <FeatureTypeSelectionPanel />
-          <FeatureInspectPanel />
+          <FeatureInspectPanel selected={selected} />
+          <FeatureTypeSelectionPanel selected={selected} />
         </SlidingPanel>
       )}
     </section>

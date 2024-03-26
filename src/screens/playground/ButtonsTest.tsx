@@ -1,4 +1,4 @@
-import { featureType } from '@/components/SIdeBar/components/FeatureTypeSelectionPanel/data'
+import { featureType } from '@/components/SideBar/components/FeatureTypeSelectionPanel/data'
 import { Button } from '@/components/ui/button'
 import { memo, useCallback, useEffect } from 'react'
 const adds = [{ name: '' }, { name: 'asdasd' }, { name: null }]

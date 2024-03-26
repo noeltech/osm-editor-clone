@@ -14,23 +14,24 @@ type DrawButtonProps = {
   drawMode?: DrawModes
   children: string
   icon?: ReactNode
-  onClick?: () => void
+  onClick?: (mode) => void
   disabled?: boolean
   className?: string
+  currentMode: string
 }
 
 function DrawButton(props: DrawButtonProps) {
-  const { setControlMode } = useDrawControlAction()
-  const { currentMode } = useDrawControl()
+  // const { setControlMode } = useDrawControlAction()
+  // const { currentMode } = useDrawControl()
   const buttonName = props.children
   const onClick = props.onClick
   const mode = props.drawMode as string
-  const isActive = mode === currentMode
+  const isActive = mode === props.currentMode
 
   const handleOnclick = useCallback(() => {
-    setControlMode(mode)
-    onClick && onClick()
-  }, [onClick, setControlMode, mode])
+    // setControlMode(mode)
+    onClick && onClick(mode)
+  }, [onClick, mode])
 
   return (
     <ControlButton

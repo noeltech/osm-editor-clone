@@ -36,8 +36,6 @@ function FeatureInputFieldBase({
   //   }
   // }, [inputValue])
 
-  console.log('inputbase is rendering')
-
   return (
     <div
       className={` mb-4 rounded-md border ${styles.borderColor} overflow-hidden font-[Roboto]`}

@@ -16,9 +16,12 @@ export default function Routes() {
         <Route path="/signup">
           <Signup />
         </Route>
-        <ProtectedRoutes path="/edit">
+        <Route path="/edit">
           <Edit />
-        </ProtectedRoutes>
+        </Route>
+        {/* <ProtectedRoutes path="/edit">
+          <Edit />
+        </ProtectedRoutes> */}
 
         <Route path="/">
           <Home />

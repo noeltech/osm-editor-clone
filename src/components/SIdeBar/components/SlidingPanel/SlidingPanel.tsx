@@ -43,13 +43,10 @@ function SlidingPanel({
 }: ISlidingPanel) {
   const [translateValue, setTranslateValue] = useState(startPositionValue.right)
 
-  console.log(translateValue)
   const slideNext = () => {
-    console.log('slide to left')
     setTranslateValue(startPositionValue.right)
   }
   const slidePrevious = () => {
-    console.log('slide to right')
     setTranslateValue(startPositionValue.left)
   }
 

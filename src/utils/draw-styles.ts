@@ -162,8 +162,25 @@ export const drawStyles = [
       'circle-color': '#fbb03b'
     }
   },
+  // {
+  //   id: 'gl-draw-point-stroke-hover-active',
+  //   type: 'circle',
+  //   filter: [
+  //     'all',
+  //     ['==', 'user_hover', 'true'],
+  //     ['==', 'active', 'false'],
+  //     ['==', '$type', 'Point'],
+  //     ['==', 'meta', 'feature'],
+  //     ['!=', 'mode', 'static']
+  //   ],
+  //   paint: {
+  //     'circle-radius': 9,
+  //     'circle-color': '#FFA500'
+  //   }
+  // },
+
   {
-    id: 'gl-draw-point-point-stroke-inactive',
+    id: 'gl-draw-point-stroke-inactive',
     type: 'circle',
     filter: [
       'all',
@@ -183,6 +200,7 @@ export const drawStyles = [
     type: 'circle',
     filter: [
       'all',
+      ['==', 'user_hover', 'false'],
       ['==', 'active', 'false'],
       ['==', '$type', 'Point'],
       ['==', 'meta', 'feature'],
@@ -193,6 +211,7 @@ export const drawStyles = [
       'circle-color': '#3bb2d0'
     }
   },
+
   {
     id: 'gl-draw-point-stroke-active',
     type: 'circle',
@@ -207,6 +226,7 @@ export const drawStyles = [
       'circle-color': '#fff'
     }
   },
+
   {
     id: 'gl-draw-point-active',
     type: 'circle',
@@ -219,6 +239,22 @@ export const drawStyles = [
     paint: {
       'circle-radius': 7,
       'circle-color': '#fbb03b'
+    }
+  },
+  {
+    id: 'gl-draw-point-stroke-hover-active',
+    type: 'circle',
+    filter: [
+      'all',
+      ['==', 'user_hover', 'true'],
+      ['==', 'active', 'false'],
+      ['==', '$type', 'Point'],
+      ['==', 'meta', 'feature'],
+      ['==', 'mode', 'simple_select']
+    ],
+    paint: {
+      'circle-radius': 9,
+      'circle-color': '#FFA500'
     }
   },
   {
