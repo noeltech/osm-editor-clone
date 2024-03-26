@@ -1,15 +1,13 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback } from 'react'
 import FeatureInspectPanel from './components/FeatureInspectPanel/FeatureInspectPanel'
 import FeatureTypeSelectionPanel from './components/FeatureTypeSelectionPanel/FeatureTypeSelectionPanel'
-import { SlidingPanel } from './components/SlidingPanel/SlidingPanel'
+
 import SearchFeaturePanel from './components/SearchFeaturePanel/SearchFeaturePanel'
-import { useEdit } from '@/features/edit/useEdit'
+
 import React from 'react'
-import {
-  useCurrentSelectedAction,
-  useCurrentSelectedState
-} from '@/features/edit/useCurrentlySelectedFeature'
+
 import { useDrawControl, useDrawControlAction } from '@/utils/useDrawControl'
+import { SlidingPanel } from 'src/components/SideBar/components/SlidingPanel/SlidingPanel'
 
 function SideBar() {
   // const { nonSelected } = useEdit()
@@ -31,9 +29,9 @@ function SideBar() {
       {!toggleView ? (
         <SearchFeaturePanel />
       ) : (
-        <SlidingPanel onClose={handleOnClose}>
-          <FeatureInspectPanel selected={selected} />
+        <SlidingPanel>
           <FeatureTypeSelectionPanel selected={selected} />
+          <FeatureInspectPanel selected={selected} />
         </SlidingPanel>
       )}
     </section>

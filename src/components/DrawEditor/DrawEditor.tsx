@@ -1,6 +1,6 @@
 import { EditHistoryProvider } from '@/utils/edit-history'
 import { DrawControlProvider } from '@/utils/useDrawControl'
-import { MapProvider, Map, Popup } from 'react-map-gl'
+import { MapProvider, Map } from 'react-map-gl'
 import FeatureContextMenu from '../FeatureContextMenu/FeatureContextMenu'
 import SideBar from '../SideBar/SideBar'
 import {
@@ -14,7 +14,7 @@ import { useState } from 'react'
 const myMapBoxToken =
   'pk.eyJ1Ijoibm9lbHRlY2giLCJhIjoiY2o2azRiazZ2MTVlZDMxbXdvdTU1OW03YSJ9.eYd9NVbg2cgcrAqs0da8eA'
 function DrawEditor() {
-  const [contextMenuInfo, setContextMenuInfo] = useState(false)
+  const [contextMenuInfo, setContextMenuInfo] = useState<object | null>(null)
 
   return (
     <MapProvider>

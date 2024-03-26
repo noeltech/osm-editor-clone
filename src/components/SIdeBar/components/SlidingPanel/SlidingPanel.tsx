@@ -1,19 +1,6 @@
 import { Button } from '@/components/ui/button'
-import {
-  ArrowBigLeftIcon,
-  ArrowBigRightIcon,
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  XIcon
-} from 'lucide-react'
-import {
-  ReactNode,
-  createContext,
-  useContext,
-  useEffect,
-  useMemo,
-  useState
-} from 'react'
+import { ChevronLeftIcon, ChevronRightIcon, XIcon } from 'lucide-react'
+import { ReactNode, createContext, useContext, useMemo, useState } from 'react'
 
 interface ISlidingPanel {
   startPosition?: 'left' | 'right' | undefined
