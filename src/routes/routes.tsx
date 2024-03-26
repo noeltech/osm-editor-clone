@@ -10,21 +10,22 @@ export default function Routes() {
   return (
     <>
       <Switch>
+        <Route path="/edit">
+          <Edit />
+        </Route>
         <Route path="/login">
           <Login />
         </Route>
         <Route path="/signup">
           <Signup />
         </Route>
-        <Route path="/edit">
-          <Edit />
-        </Route>
+
         {/* <ProtectedRoutes path="/edit">
           <Edit />
         </ProtectedRoutes> */}
 
         <Route path="/">
-          <Home />
+          <Edit />
         </Route>
       </Switch>
     </>
