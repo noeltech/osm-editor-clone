@@ -2,7 +2,7 @@ import { EditHistoryProvider } from '@/utils/edit-history'
 import { DrawControlProvider } from '@/utils/useDrawControl'
 import { MapProvider, Map } from 'react-map-gl'
 import FeatureContextMenu from '../FeatureContextMenu/FeatureContextMenu'
-import SideBar from '../SideBar/SideBar'
+import SideBar from 'src/components/SideBar/SideBar'
 import {
   MainPanel,
   MapLayoverLayout,
